@@ -3,6 +3,4 @@ Welcome to the Space Invaders game! This is a browser-based version of the class
 
 website link :
 
-```
-https://space-invaders-a26f.onrender.com
-```
+[space-invaders](https://space-invaders-a26f.onrender.com)
