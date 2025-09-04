@@ -1,0 +1,12 @@
+{
+  "name": "enhanced-space-invaders-phase1",
+  "version": "1.0.0",
+  "description": "Phase 1 base game for enhanced space invaders",
+  "type": "module",
+  "scripts": {
+    "start": "python -m http.server 3000"
+  },
+  "keywords": ["game", "space invaders", "canvas", "javascript"],
+  "author": "Enhanced Space Invaders Team",
+  "license": "MIT"
+}

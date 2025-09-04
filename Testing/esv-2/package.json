@@ -1,0 +1,21 @@
+{
+  "name": "enhanced-space-invaders",
+  "version": "2.0.0",
+  "description": "AI-powered Space Invaders game with modern web technologies",
+  "type": "module",
+  "main": "game.js",
+  "scripts": {
+    "dev": "python -m http.server 3000",
+    "serve": "python -m http.server 3000",
+    "start": "python -m http.server 3000"
+  },
+  "keywords": [
+    "game",
+    "space-invaders",
+    "javascript",
+    "canvas",
+    "web-game"
+  ],
+  "author": "Space Invaders Team",
+  "license": "MIT"
+}

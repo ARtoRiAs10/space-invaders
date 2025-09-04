@@ -1,0 +1,181 @@
+{
+  "level": 4,
+  "name": "Quantum Nexus",
+  "description": "Face advanced quantum-powered enemies with unpredictable abilities. Master precision and timing to survive.",
+  "waveCount": 6,
+  "enemyTypes": ["basic", "fast", "armored", "quantum"],
+  "bossEnabled": true,
+  "background": "space4",
+  "difficulty": {
+    "enemySpeed": 1.6,
+    "enemyHealth": 1.5,
+    "spawnRate": 1.3,
+    "projectileSpeed": 1.4
+  },
+  "objectives": [
+    {
+      "id": "survive",
+      "description": "Complete the level",
+      "type": "survive",
+      "required": true,
+      "target": 1,
+      "bonusScore": 0
+    },
+    {
+      "id": "precision_master",
+      "description": "Maintain 85% accuracy throughout",
+      "type": "accuracy",
+      "required": false,
+      "target": 0.85,
+      "bonusScore": 1500
+    },
+    {
+      "id": "quantum_killer",
+      "description": "Destroy 20 quantum enemies",
+      "type": "quantum_enemies",
+      "required": false,
+      "target": 20,
+      "bonusScore": 1000
+    },
+    {
+      "id": "time_master",
+      "description": "Complete in under 8 minutes",
+      "type": "time",
+      "required": false,
+      "target": 480000,
+      "bonusScore": 2000
+    }
+  ],
+  "rewards": {
+    "baseScore": 3000,
+    "timeBonus": 1500,
+    "accuracyBonus": 1000,
+    "perfectBonus": 4000
+  },
+  "environment": {
+    "starDensity": 140,
+    "nebula": true,
+    "asteroids": false,
+    "particleEffects": true,
+    "colorScheme": "quantum",
+    "hazards": ["quantum_rifts", "energy_storms"],
+    "quantumEffects": true
+  },
+  "music": {
+    "background": "level4_bg.mp3",
+    "boss": "boss4_theme.mp3"
+  },
+  "enemyWaves": [
+    {
+      "wave": 1,
+      "enemies": [
+        { "type": "quantum", "count": 5, "formation": "phase", "speed": 1.4 },
+        { "type": "fast", "count": 12, "formation": "support", "speed": 1.7 }
+      ],
+      "delay": 2000
+    },
+    {
+      "wave": 2,
+      "enemies": [
+        { "type": "armored", "count": 8, "formation": "quantum_shield", "speed": 1.2 },
+        { "type": "quantum", "count": 8, "formation": "blink", "speed": 1.5 }
+      ],
+      "delay": 3000
+    },
+    {
+      "wave": 3,
+      "enemies": [
+        { "type": "basic", "count": 18, "formation": "quantum_web", "speed": 1.5 },
+        { "type": "quantum", "count": 10, "formation": "mirror", "speed": 1.6 }
+      ],
+      "delay": 2500
+    },
+    {
+      "wave": 4,
+      "enemies": [
+        { "type": "fast", "count": 25, "formation": "quantum_storm", "speed": 1.8 },
+        { "type": "armored", "count": 12, "formation": "fortress", "speed": 1.3 }
+      ],
+      "delay": 3500
+    },
+    {
+      "wave": 5,
+      "enemies": [
+        { "type": "quantum", "count": 15, "formation": "phase_shift", "speed": 1.7 },
+        { "type": "basic", "count": 20, "formation": "quantum_grid", "speed": 1.4 }
+      ],
+      "delay": 4000
+    },
+    {
+      "wave": 6,
+      "enemies": [
+        { "type": "quantum", "count": 20, "formation": "final_phase", "speed": 1.8 },
+        { "type": "armored", "count": 15, "formation": "last_stand", "speed": 1.4 },
+        { "type": "fast", "count": 30, "formation": "quantum_chaos", "speed": 1.9 }
+      ],
+      "delay": 5000
+    }
+  ],
+  "boss": {
+    "type": "quantum_annihilator",
+    "health": 1500,
+    "attackPatterns": ["quantum_burst", "phase_beam", "reality_tear", "clone_army"],
+    "phases": [
+      {
+        "healthThreshold": 1.0,
+        "behavior": "analytical",
+        "attacks": ["quantum_burst", "phase_beam"]
+      },
+      {
+        "healthThreshold": 0.75,
+        "behavior": "adaptive",
+        "attacks": ["quantum_burst", "phase_beam", "clone_army"]
+      },
+      {
+        "healthThreshold": 0.5,
+        "behavior": "aggressive",
+        "attacks": ["phase_beam", "reality_tear", "clone_army"]
+      },
+      {
+        "healthThreshold": 0.25,
+        "behavior": "quantum_rage",
+        "attacks": ["quantum_burst", "reality_tear", "clone_army"]
+      },
+      {
+        "healthThreshold": 0.1,
+        "behavior": "final_protocol",
+        "attacks": ["quantum_burst", "phase_beam", "reality_tear", "clone_army"]
+      }
+    ],
+    "specialAbilities": ["quantum_teleport", "reality_distortion", "time_dilation"]
+  },
+  "powerUps": {
+    "spawnRate": 0.15,
+    "types": ["machineGun", "spread", "laser", "shield", "bomb", "quantum_weapon"],
+    "positions": ["quantum_rifts", "random"],
+    "quantumPowerUps": true
+  },
+  "hazards": {
+    "quantumRifts": {
+      "count": 6,
+      "damage": 2,
+      "teleportChance": 0.3,
+      "spawnRate": 0.6
+    },
+    "energyStorms": {
+      "intensity": 0.8,
+      "damage": 1,
+      "slowEffect": 0.6,
+      "duration": 5000
+    }
+  },
+  "specialMechanics": {
+    "quantumPhasing": true,
+    "realityDistortion": true,
+    "timeDilation": false
+  },
+  "unlockRequirement": {
+    "previousLevel": 3,
+    "minStars": 2
+  }
+}

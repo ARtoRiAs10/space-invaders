@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Space Invaders</title>
+    <!-- Preload fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Orbitron', 'Courier New', monospace;
+            background: linear-gradient(135deg, #000011 0%, #000033 100%);
+            color: white;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        #gameContainer {
+            position: relative;
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            background: #000022;
+        }
+        
+        #gameCanvas {
+            display: block;
+            background: linear-gradient(180deg, #000033 0%, #000011 100%);
+        }
+        
+        #loading-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #333;
+            border-top: 3px solid #00ffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #error-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+        }
+        
+        .error-message {
+            background: #330000;
+            border: 2px solid #ff4444;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            max-width: 500px;
+        }
+        
+        .error-message h2 {
+            color: #ff4444;
+            margin-bottom: 15px;
+        }
+        
+        .retry-button {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-family: 'Orbitron', monospace;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .retry-button:hover {
+            background: #ff6666;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            #gameContainer {
+                border-radius: 0;
+                border: none;
+                width: 100vw;
+                height: 100vh;
+            }
+            
+            #gameCanvas {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="1024" height="576"></canvas>
+        
+        <div id="loading-screen">
+            <div class="loading-spinner"></div>
+            <h2>Loading Enhanced Space Invaders...</h2>
+            <p>Starting game engine...</p>
+        </div>
+        
+        <div id="error-container">
+            <!-- Error messages will appear here -->
+        </div>
+    </div>
+
+    <script type="module">
+        function showErrorScreen(message) {
+            const errorContainer = document.getElementById('error-container');
+            const loadingScreen = document.getElementById('loading-screen');
+            
+            if (loadingScreen) loadingScreen.style.display = 'none';
+            
+            if (errorContainer) {
+                errorContainer.innerHTML = `
+                    <div class="error-message">
+                        <h2>⚠️ Game Error</h2>
+                        <p>${message}</p>
+                        <br>
+                        <button onclick="location.reload()" class="retry-button">
+                            🔄 Reload Game
+                        </button>
+                        <br><br>
+                        <div style="font-size: 12px; color: #888; text-align: left;">
+                            <strong>Need HTTP Server:</strong><br>
+                            <code style="background: #222; padding: 2px 6px;">python -m http.server 3000</code><br>
+                            Then open: <code style="background: #222; padding: 2px 6px;">http://localhost:3000</code>
+                        </div>
+                    </div>
+                `;
+                errorContainer.style.display = 'flex';
+            }
+        }
+        
+        window.showErrorScreen = showErrorScreen;
+        
+        async function initializeGame() {
+            try {
+                console.log('🎮 Starting Enhanced Space Invaders...');
+                
+                const gameModule = await import('./game.js');
+                const loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen) loadingScreen.style.display = 'none';
+                
+                await gameModule.startGame();
+                console.log('✅ Game started successfully!');
+                
+            } catch (error) {
+                console.error('❌ Failed to load game:', error);
+                showErrorScreen('Failed to load game. Please start an HTTP server.');
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeGame);
+        } else {
+            initializeGame();
+        }
+        
+        window.addEventListener('error', (event) => {
+            console.error('Global error:', event.error);
+            showErrorScreen('Game error: ' + (event.error?.message || 'Unknown error'));
+        });
+    </script>
+</body>
+</html>

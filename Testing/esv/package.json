@@ -1,0 +1,27 @@
+{
+  "name": "enhanced-space-invaders",
+  "version": "2.0.0",
+  "description": "Enhanced Space Invaders game with AI bosses, multi-level gameplay, Clerk authentication, and shadcn/ui",
+  "main": "src/game-loader.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "serve public"
+  },
+  "keywords": ["game", "space-invaders", "javascript", "ai", "clerk", "shadcn"],
+  "author": "Enhanced by AI Assistant",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@clerk/clerk-js": "^4.70.0",
+    "howler": "^2.2.4",
+    "gsap": "^3.12.2",
+    "groq-sdk": "^0.3.3",
+    "lucide": "^0.263.0"
+  },
+  "devDependencies": {
+    "vite": "^4.4.9",
+    "serve": "^14.2.4"
+  }
+}

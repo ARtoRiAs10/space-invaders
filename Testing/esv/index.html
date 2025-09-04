@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Space Invaders - AI Powered Gaming</title>
+    
+    <!-- Clerk Authentication -->
+    <script src="https://unpkg.com/@clerk/clerk-js@latest/dist/clerk.browser.js" crossorigin="anonymous"></script>
+    
+    <!-- GSAP Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Howler Audio Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Tailwind CSS for shadcn/ui -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="src/ui/styles/globals.css">
+    <link rel="stylesheet" href="src/ui/styles/components.css">
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            font-family: 'Orbitron', monospace;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        #gameContainer {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        canvas {
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            background: radial-gradient(circle at center, #000011 0%, #000000 100%);
+        }
+        
+        .ui-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        .ui-overlay > * {
+            pointer-events: auto;
+        }
+        
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.5), transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.8), transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: stars 20s linear infinite;
+        }
+        
+        @keyframes stars {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-100px); }
+        }
+        
+        .glow {
+            box-shadow: 0 0 10px currentColor;
+        }
+        
+        .retro-button {
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            border: none;
+            padding: 12px 24px;
+            color: white;
+            font-weight: bold;
+            font-family: 'Orbitron', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+        }
+        
+        .retro-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Stars -->
+    <div class="stars"></div>
+    
+    <!-- Game Container -->
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="1024" height="576"></canvas>
+        
+        <!-- UI Overlay -->
+        <div class="ui-overlay" id="uiOverlay">
+            <!-- Authentication UI -->
+            <div id="authContainer" class="absolute top-4 right-4 z-50">
+                <!-- Will be populated by Clerk -->
+            </div>
+            
+            <!-- Game HUD -->
+            <div id="gameHUD" class="absolute top-4 left-4 text-white font-mono">
+                <div class="flex flex-col space-y-2">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm">Score:</span>
+                        <span id="scoreDisplay" class="text-xl font-bold text-cyan-400">0</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm">Level:</span>
+                        <span id="levelDisplay" class="text-xl font-bold text-green-400">1</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm">Lives:</span>
+                        <span id="livesDisplay" class="text-xl font-bold text-red-400">3</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Boss Health Bar -->
+            <div id="bossHealthContainer" class="absolute top-20 left-1/2 transform -translate-x-1/2 w-96 hidden">
+                <div class="bg-gray-800 rounded-lg p-4 border-2 border-red-500">
+                    <div class="text-center text-red-400 font-bold mb-2" id="bossName">Boss Name</div>
+                    <div class="w-full bg-gray-700 rounded-full h-4">
+                        <div id="bossHealthBar" class="bg-red-500 h-4 rounded-full transition-all duration-300" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Start Screen -->
+            <div id="startScreen" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-80">
+                <div class="text-center text-white">
+                    <h1 class="text-6xl font-bold mb-8 text-cyan-400 animate-pulse">SPACE INVADERS</h1>
+                    <h2 class="text-2xl mb-8 text-gray-300">Enhanced with AI Bosses</h2>
+                    <div class="space-y-4">
+                        <button id="startButton" class="retro-button">Start Game</button>
+                        <button id="levelSelectButton" class="retro-button">Select Level</button>
+                        <button id="settingsButton" class="retro-button">Settings</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Level Selection Screen -->
+            <div id="levelSelectScreen" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-90 hidden">
+                <div class="text-center text-white">
+                    <h2 class="text-4xl font-bold mb-8 text-cyan-400">Select Level</h2>
+                    <div id="levelGrid" class="grid grid-cols-3 gap-4 mb-8">
+                        <!-- Level buttons will be populated dynamically -->
+                    </div>
+                    <button id="backFromLevels" class="retro-button">Back to Menu</button>
+                </div>
+            </div>
+            
+            <!-- Settings Screen -->
+            <div id="settingsScreen" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-90 hidden">
+                <div class="text-center text-white">
+                    <h2 class="text-4xl font-bold mb-8 text-cyan-400">Settings</h2>
+                    <div class="space-y-6 mb-8">
+                        <div class="flex items-center justify-between">
+                            <label class="text-lg">Master Volume:</label>
+                            <input type="range" id="masterVolume" min="0" max="100" value="50" class="w-32">
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <label class="text-lg">Music Volume:</label>
+                            <input type="range" id="musicVolume" min="0" max="100" value="30" class="w-32">
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <label class="text-lg">SFX Volume:</label>
+                            <input type="range" id="sfxVolume" min="0" max="100" value="70" class="w-32">
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <label class="text-lg">Difficulty:</label>
+                            <select id="difficulty" class="bg-gray-800 text-white p-2 rounded">
+                                <option value="easy">Easy</option>
+                                <option value="normal" selected>Normal</option>
+                                <option value="hard">Hard</option>
+                                <option value="insane">Insane</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="backFromSettings" class="retro-button">Back to Menu</button>
+                </div>
+            </div>
+            
+            <!-- Game Over Screen -->
+            <div id="gameOverScreen" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-90 hidden">
+                <div class="text-center text-white">
+                    <h2 class="text-4xl font-bold mb-4 text-red-400">Game Over</h2>
+                    <div class="mb-8">
+                        <p class="text-xl mb-2">Final Score: <span id="finalScore" class="text-cyan-400">0</span></p>
+                        <p class="text-xl mb-2">Level Reached: <span id="finalLevel" class="text-green-400">1</span></p>
+                        <p id="newHighScore" class="text-lg text-yellow-400 hidden">🎉 New High Score! 🎉</p>
+                    </div>
+                    <div class="space-y-4">
+                        <button id="restartButton" class="retro-button">Play Again</button>
+                        <button id="mainMenuButton" class="retro-button">Main Menu</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Victory Screen -->
+            <div id="victoryScreen" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-90 hidden">
+                <div class="text-center text-white">
+                    <h2 class="text-4xl font-bold mb-4 text-green-400">Level Complete!</h2>
+                    <div class="mb-8">
+                        <p class="text-xl mb-2">Score: <span id="levelScore" class="text-cyan-400">0</span></p>
+                        <p class="text-xl mb-2">Bonus: <span id="levelBonus" class="text-yellow-400">0</span></p>
+                    </div>
+                    <div class="space-y-4">
+                        <button id="nextLevelButton" class="retro-button">Next Level</button>
+                        <button id="levelMenuButton" class="retro-button">Level Select</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Loading Screen -->
+            <div id="loadingScreen" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-90 hidden">
+                <div class="text-center text-white">
+                    <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-cyan-400 mx-auto mb-4"></div>
+                    <p class="text-lg">Loading AI Boss...</p>
+                    <p class="text-sm text-gray-400 mt-2">Generating dynamic behaviors...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Load Game Modules -->
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+{
+  "level": 5,
+  "name": "The Final Protocol",
+  "description": "The ultimate challenge. Face the supreme alien intelligence in an epic final battle that will test all your skills.",
+  "waveCount": 8,
+  "enemyTypes": ["basic", "fast", "armored", "quantum", "supreme"],
+  "bossEnabled": true,
+  "background": "space5",
+  "difficulty": {
+    "enemySpeed": 2.0,
+    "enemyHealth": 2.0,
+    "spawnRate": 1.5,
+    "projectileSpeed": 1.6
+  },
+  "objectives": [
+    {
+      "id": "survive",
+      "description": "Complete the level",
+      "type": "survive",
+      "required": true,
+      "target": 1,
+      "bonusScore": 0
+    },
+    {
+      "id": "legendary_accuracy",
+      "description": "Achieve 90%+ accuracy",
+      "type": "accuracy",
+      "required": false,
+      "target": 0.9,
+      "bonusScore": 3000
+    },
+    {
+      "id": "combo_legend",
+      "description": "Achieve a 50+ hit combo",
+      "type": "combo",
+      "required": false,
+      "target": 50,
+      "bonusScore": 2500
+    },
+    {
+      "id": "supreme_destroyer",
+      "description": "Defeat the final boss without using power-ups",
+      "type": "no_powerup_boss",
+      "required": false,
+      "target": 1,
+      "bonusScore": 5000
+    },
+    {
+      "id": "perfect_victory",
+      "description": "Complete with perfect score (all objectives)",
+      "type": "perfect",
+      "required": false,
+      "target": 1,
+      "bonusScore": 10000
+    }
+  ],
+  "rewards": {
+    "baseScore": 5000,
+    "timeBonus": 2500,
+    "accuracyBonus": 2000,
+    "perfectBonus": 10000
+  },
+  "environment": {
+    "starDensity": 200,
+    "nebula": true,
+    "asteroids": true,
+    "particleEffects": true,
+    "colorScheme": "divine",
+    "hazards": ["quantum_rifts", "energy_storms", "reality_tears", "temporal_anomalies"],
+    "quantumEffects": true,
+    "finalBattle": true
+  },
+  "music": {
+    "background": "final_battle_bg.mp3",
+    "boss": "supreme_boss_theme.mp3"
+  },
+  "enemyWaves": [
+    {
+      "wave": 1,
+      "name": "Vanguard Assault",
+      "enemies": [
+        { "type": "supreme", "count": 3, "formation": "trinity", "speed": 1.8 },
+        { "type": "quantum", "count": 8, "formation": "escort", "speed": 1.6 }
+      ],
+      "delay": 2000
+    },
+    {
+      "wave": 2,
+      "name": "Armored Division",
+      "enemies": [
+        { "type": "armored", "count": 15, "formation": "phalanx", "speed": 1.4 },
+        { "type": "supreme", "count": 5, "formation": "commanders", "speed": 1.7 }
+      ],
+      "delay": 3000
+    },
+    {
+      "wave": 3,
+      "name": "Speed Force",
+      "enemies": [
+        { "type": "fast", "count": 35, "formation": "lightning_strike", "speed": 2.2 },
+        { "type": "quantum", "count": 10, "formation": "phase_support", "speed": 1.8 }
+      ],
+      "delay": 2500
+    },
+    {
+      "wave": 4,
+      "name": "Quantum Legion",
+      "enemies": [
+        { "type": "quantum", "count": 20, "formation": "quantum_matrix", "speed": 1.9 },
+        { "type": "supreme", "count": 8, "formation": "overlords", "speed": 1.8 }
+      ],
+      "delay": 3500
+    },
+    {
+      "wave": 5,
+      "name": "Combined Fleet",
+      "enemies": [
+        { "type": "basic", "count": 25, "formation": "fleet_core", "speed": 1.8 },
+        { "type": "armored", "count": 20, "formation": "heavy_support", "speed": 1.5 },
+        { "type": "fast", "count": 30, "formation": "interceptors", "speed": 2.0 }
+      ],
+      "delay": 4000
+    },
+    {
+      "wave": 6,
+      "name": "Elite Guard",
+      "enemies": [
+        { "type": "supreme", "count": 12, "formation": "royal_guard", "speed": 1.9 },
+        { "type": "quantum", "count": 25, "formation": "void_walkers", "speed": 2.0 }
+      ],
+      "delay": 4500
+    },
+    {
+      "wave": 7,
+      "name": "Final Assault",
+      "enemies": [
+        { "type": "supreme", "count": 20, "formation": "apocalypse", "speed": 2.0 },
+        { "type": "quantum", "count": 30, "formation": "reality_breach", "speed": 2.1 },
+        { "type": "armored", "count": 25, "formation": "last_bastion", "speed": 1.6 }
+      ],
+      "delay": 5000
+    },
+    {
+      "wave": 8,
+      "name": "Supreme Convergence",
+      "enemies": [
+        { "type": "supreme", "count": 50, "formation": "convergence", "speed": 2.2 },
+        { "type": "quantum", "count": 40, "formation": "singularity", "speed": 2.0 },
+        { "type": "basic", "count": 100, "formation": "final_wave", "speed": 2.0 }
+      ],
+      "delay": 6000,
+      "finalWave": true
+    }
+  ],
+  "boss": {
+    "type": "final_protocol",
+    "name": "The Final Protocol",
+    "health": 3000,
+    "attackPatterns": [
+      "divine_judgment", 
+      "reality_storm", 
+      "quantum_annihilation", 
+      "temporal_cascade", 
+      "void_supremacy",
+      "final_protocol"
+    ],
+    "phases": [
+      {
+        "name": "Awakening",
+        "healthThreshold": 1.0,
+        "behavior": "supreme",
+        "attacks": ["divine_judgment", "reality_storm"],
+        "minions": ["quantum", "supreme"]
+      },
+      {
+        "name": "Ascension",
+        "healthThreshold": 0.8,
+        "behavior": "transcendent",
+        "attacks": ["reality_storm", "quantum_annihilation"],
+        "minions": ["supreme"],
+        "specialAbilities": ["reality_shift"]
+      },
+      {
+        "name": "Dominion",
+        "healthThreshold": 0.6,
+        "behavior": "godlike",
+        "attacks": ["quantum_annihilation", "temporal_cascade"],
+        "minions": ["quantum", "supreme"],
+        "specialAbilities": ["time_stop", "dimensional_rift"]
+      },
+      {
+        "name": "Wrath",
+        "healthThreshold": 0.4,
+        "behavior": "enraged",
+        "attacks": ["temporal_cascade", "void_supremacy"],
+        "minions": ["supreme"],
+        "specialAbilities": ["reality_tear", "existence_denial"]
+      },
+      {
+        "name": "Desperation",
+        "healthThreshold": 0.2,
+        "behavior": "desperate",
+        "attacks": ["void_supremacy", "final_protocol"],
+        "minions": [],
+        "specialAbilities": ["last_stand", "supreme_sacrifice"]
+      },
+      {
+        "name": "Final Protocol",
+        "healthThreshold": 0.05,
+        "behavior": "ultimate",
+        "attacks": ["final_protocol"],
+        "minions": [],
+        "specialAbilities": ["ultimate_power", "reality_rewrite"],
+        "finalPhase": true
+      }
+    ],
+    "specialAbilities": [
+      "omnipresence",
+      "reality_manipulation",
+      "temporal_control",
+      "quantum_supremacy",
+      "divine_authority"
+    ]
+  },
+  "powerUps": {
+    "spawnRate": 0.1,
+    "types": ["machineGun", "spread", "laser", "shield", "bomb", "quantum_weapon", "divine_power"],
+    "positions": ["boss_phases", "rare"],
+    "legendaryPowerUps": true
+  },
+  "hazards": {
+    "quantumRifts": {
+      "count": 10,
+      "damage": 3,
+      "teleportChance": 0.4,
+      "spawnRate": 0.8
+    },
+    "energyStorms": {
+      "intensity": 1.0,
+      "damage": 2,
+      "slowEffect": 0.5,
+      "duration": 8000
+    },
+    "realityTears": {
+      "count": 4,
+      "damage": 5,
+      "distortionEffect": 0.7,
+      "spawnRate": 0.3
+    },
+    "temporalAnomalies": {
+      "intensity": 0.6,
+      "timeSlowEffect": 0.3,
+      "duration": 6000,
+      "spawnRate": 0.2
+    }
+  },
+  "specialMechanics": {
+    "quantumPhasing": true,
+    "realityDistortion": true,
+    "timeDilation": true,
+    "multiversalCombat": true,
+    "finalBossMechanics": true
+  },
+  "unlockRequirement": {
+    "previousLevel": 4,
+    "minStars": 3,
+    "totalStars": 12
+  },
+  "completion": {
+    "unlocksNewGamePlus": true,
+    "unlocksEndlessMode": true,
+    "grantsLegendaryStatus": true
+  }
+}

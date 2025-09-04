@@ -1,0 +1,112 @@
+{
+  "level": 1,
+  "name": "Outer Perimeter",
+  "description": "The alien invasion begins at the outer edges of space. Learn the basics of combat while facing the first wave of invaders.",
+  "waveCount": 3,
+  "enemyTypes": ["basic"],
+  "bossEnabled": true,
+  "background": "space1",
+  "difficulty": {
+    "enemySpeed": 1.0,
+    "enemyHealth": 1.0,
+    "spawnRate": 1.0,
+    "projectileSpeed": 1.0
+  },
+  "objectives": [
+    {
+      "id": "survive",
+      "description": "Complete the level",
+      "type": "survive",
+      "required": true,
+      "target": 1,
+      "bonusScore": 0
+    },
+    {
+      "id": "accuracy_60",
+      "description": "Maintain 60% accuracy or higher",
+      "type": "accuracy",
+      "required": false,
+      "target": 0.6,
+      "bonusScore": 500
+    },
+    {
+      "id": "collect_powerups",
+      "description": "Collect at least 2 power-ups",
+      "type": "powerups",
+      "required": false,
+      "target": 2,
+      "bonusScore": 300
+    }
+  ],
+  "rewards": {
+    "baseScore": 1000,
+    "timeBonus": 500,
+    "accuracyBonus": 300,
+    "perfectBonus": 1500
+  },
+  "environment": {
+    "starDensity": 80,
+    "nebula": false,
+    "asteroids": false,
+    "particleEffects": true,
+    "colorScheme": "blue"
+  },
+  "music": {
+    "background": "level1_bg.mp3",
+    "boss": "boss1_theme.mp3"
+  },
+  "enemyWaves": [
+    {
+      "wave": 1,
+      "enemies": [
+        { "type": "basic", "count": 15, "formation": "grid", "speed": 1.0 }
+      ],
+      "delay": 2000
+    },
+    {
+      "wave": 2,
+      "enemies": [
+        { "type": "basic", "count": 20, "formation": "grid", "speed": 1.1 }
+      ],
+      "delay": 3000
+    },
+    {
+      "wave": 3,
+      "enemies": [
+        { "type": "basic", "count": 25, "formation": "spread", "speed": 1.2 }
+      ],
+      "delay": 4000
+    }
+  ],
+  "boss": {
+    "type": "guardian_sentinel",
+    "health": 500,
+    "attackPatterns": ["straight", "spread"],
+    "phases": [
+      {
+        "healthThreshold": 1.0,
+        "behavior": "cautious",
+        "attacks": ["straight"]
+      },
+      {
+        "healthThreshold": 0.5,
+        "behavior": "aggressive", 
+        "attacks": ["straight", "spread"]
+      }
+    ]
+  },
+  "powerUps": {
+    "spawnRate": 0.3,
+    "types": ["machineGun", "spread", "shield"],
+    "positions": ["random"]
+  },
+  "tutorial": {
+    "enabled": true,
+    "hints": [
+      "Use A/D or Arrow Keys to move",
+      "Press Space to shoot",
+      "Collect power-ups for enhanced weapons",
+      "Watch out for the boss at the end!"
+    ]
+  }
+}
